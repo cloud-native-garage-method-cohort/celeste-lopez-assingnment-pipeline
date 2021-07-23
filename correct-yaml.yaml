@@ -1,29 +1,30 @@
+---
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
-metadata: 
+metadata:
   name: markdown-linting-pipeline
 spec:
   workspaces:
-  - name: pipeline-shared-data
+    - name: pipeline-shared-data
   tasks:
-  - name: clone-repository
-    taskRef:
-      name: git-clone
-      kind: ClusterTask
-    workspaces:
-    - name: output
-      workspace: pipeline-shared-data
-    params:
-    - name: url
-      value: https://github.com/upslopeio/lint-markdown-files.git
-  - name: md-lint-run
-    taskRef:
-      name: markdown-lint
-    runAfter:
-      - clone-repository
-    workspaces:
-      - name: shared-workspace
-        workspace: pipeline-shared-data
-    params:
-      - name: args
-        value: ["."]
+    - name: clone-repository
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: pipeline-shared-data
+      params:
+        - name: url
+          value: https://github.com/upslopeio/lint-markdown-files.git
+    - name: md-lint-run
+      taskRef:
+        name: markdown-lint
+      runAfter:
+        - clone-repository
+      workspaces:
+        - name: shared-workspace
+          workspace: pipeline-shared-data
+      params:
+        - name: args
+          value: ["."]
